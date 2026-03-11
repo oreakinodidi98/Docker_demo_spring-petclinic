@@ -1,73 +1,15 @@
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: demo-db
-type: servicebinding.io/postgresql
-stringData:
-  type: "postgresql"
-  provider: "postgresql"
-  host: "demo-db"
-  port: "5432"
-  database: "petclinic"
-  username: "user"
-  password: "pass"
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: demo-db
-spec:
-  ports:
-    - port: 5432
-  selector:
-    app: demo-db
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: demo-db
-  labels:
-    app: demo-db
-spec:
-  selector:
-    matchLabels:
-      app: demo-db
-  template:
-    metadata:
-      labels:
-        app: demo-db
-    spec:
-      containers:
-        - image: postgres:18.0
-          name: postgresql
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: demo-db
-                  key: username
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: demo-db
-                  key: password
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: demo-db
-                  key: database
-          ports:
-            - containerPort: 5432
-              name: postgresql
-          livenessProbe:
-            tcpSocket:
-              port: postgresql
-          readinessProbe:
-            tcpSocket:
-              port: postgresql
-          startupProbe:
-            tcpSocket:
-              port: postgresql
+# This file is no longer needed for Azure PostgreSQL Flexible Server
+# The database connection is now managed by Azure Service Connector
+# with passwordless authentication using Entra ID and Workload Identity
+#
+# Connection details are stored in the Kubernetes secret: sc-pg-secret
+# Service Account: sc-account-acda3ed9-e3d0-4f77-8887-37e2db05f5df
+#
+# To view the connection details:
+#   kubectl get secret sc-pg-secret -o yaml
+#
+# Azure PostgreSQL Flexible Server details:
+#   Server: db-petclinic189769.postgres.database.azure.com
+#   Database: petclinic
+#   Authentication: Entra ID (Managed Identity)
+#   Username: aad_pg
