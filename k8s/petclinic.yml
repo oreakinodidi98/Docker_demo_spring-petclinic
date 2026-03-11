@@ -37,8 +37,8 @@ spec:
       containers:
         - name: workload
           # Update this image to point to your ACR
-          # acrpetclinic189769.azurecr.io/petclinic:0.0.1
-          image: acrpetclinic189769.azurecr.io/petclinic:0.0.1
+          # acrpetclinic189769.azurecr.io/petclinic:0.0.2
+          image: acrpetclinic189769.azurecr.io/petclinic:0.0.2
           env:
             # Enable the PostgreSQL profile for Spring Boot
             - name: SPRING_PROFILES_ACTIVE
